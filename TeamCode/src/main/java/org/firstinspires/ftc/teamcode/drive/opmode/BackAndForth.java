@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DIST_CORRECT;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -28,7 +29,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Autonomous(group = "drive")
 public class BackAndForth extends LinearOpMode {
 
-    public static double DISTANCE = 50;
+    public static double DISTANCE = 50*DIST_CORRECT;
 
     @Override
     public void runOpMode() throws InterruptedException {

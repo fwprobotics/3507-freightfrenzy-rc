@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DIST_CORRECT;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -24,7 +25,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Config
 @Autonomous(group = "drive")
 public class FollowerPIDTuner extends LinearOpMode {
-    public static double DISTANCE = 48; // in
+    public static double DISTANCE = 48*DIST_CORRECT; // in
 
     @Override
     public void runOpMode() throws InterruptedException {

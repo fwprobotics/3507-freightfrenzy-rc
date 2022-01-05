@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DIST_CORRECT;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 @Autonomous(group = "drive")
 public class StraightTest extends LinearOpMode {
-    public static double DISTANCE = 60; // in
+    public static double DISTANCE = 60*DIST_CORRECT; // in
 
     @Override
     public void runOpMode() throws InterruptedException {

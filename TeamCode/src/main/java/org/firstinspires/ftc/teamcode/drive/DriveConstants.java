@@ -14,13 +14,15 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
  * These are not the only parameters; some are located in the localizer classes, drive base classes,
  * and op modes themselves.
  */
+
+// Connect with adb connect 192.168.43.1:5555
 @Config
 public class DriveConstants {
 
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 1250;
+    public static final double TICKS_PER_REV = 420;
     public static final double MAX_RPM = 396.964544;
 
     /*
@@ -44,8 +46,8 @@ public class DriveConstants {
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
     public static double WHEEL_RADIUS = 1.8898; // in
-    public static double GEAR_RATIO = 1.6977; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 12.0; // in
+    public static double GEAR_RATIO = 0.6027; // output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 8.75; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using

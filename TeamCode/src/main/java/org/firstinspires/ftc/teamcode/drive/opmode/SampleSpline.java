@@ -21,14 +21,24 @@ public class SampleSpline extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(10, 72, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
-        Trajectory myTrajectory = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-9, 54), Math.toRadians(270))
+        Trajectory myTrajectory1 = drive.trajectoryBuilder(startPose)
+                .splineTo(new Vector2d(-9, 48), Math.toRadians(270))
                 .build();
+        Trajectory myTrajectory2 = drive.trajectoryBuilder(myTrajectory1.end())
+                //Improve this to make it less choppy
+                .splineTo(new Vector2d(-9, 60), Math.toRadians(0))
+                .splineTo(new Vector2d(10, 76), Math.toRadians(0))
+                .forward(48)
+                .build();
+
 
         waitForStart();
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(myTrajectory);
+        drive.followTrajectory(myTrajectory1);
+        sleep(1000);
+        drive.followTrajectory(myTrajectory2);
+
     }
 }

@@ -14,15 +14,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-
+@Autonomous
 public class SampleSpline extends LinearOpMode {
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Trajectory myTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(10)
-                .forward(5)
+        Pose2d startPose = new Pose2d(10, 72, Math.toRadians(270));
+        drive.setPoseEstimate(startPose);
+        Trajectory myTrajectory = drive.trajectoryBuilder(startPose)
+                .splineTo(new Vector2d(-9, 54), Math.toRadians(270))
                 .build();
 
         waitForStart();

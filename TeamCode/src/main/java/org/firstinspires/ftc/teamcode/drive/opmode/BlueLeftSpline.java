@@ -25,14 +25,14 @@ public class BlueLeftSpline extends LinearOpMode {
         Trajectory myTrajectory1 = drive.trajectoryBuilder(startPose)
                 .splineTo(new Vector2d(-12, 40), Math.toRadians(270))
                 .build();
-        Trajectory myTrajectory2 = drive.trajectoryBuilder(myTrajectory1.end())
+        Trajectory myTrajectory2 = drive.trajectoryBuilder(drive.getPoseEstimate())
                 //Improve this to make it less choppy
                 .splineTo(new Vector2d(-8, 55), Math.toRadians(45))
                 .splineTo(new Vector2d(0, 68), Math.toRadians(10))
                 //.splineTo(new Vector2d(10, 76), Math.toRadians(0))
                 .splineTo(new Vector2d(48, 68), Math.toRadians(0))
                 .build();
-        Trajectory myTrajectory3 = drive.trajectoryBuilder(myTrajectory2.end())
+        Trajectory myTrajectory3 = drive.trajectoryBuilder(drive.getPoseEstimate())
                 .splineTo(new Vector2d(44, 54), Math.toRadians(90))
                 .splineTo(new Vector2d(40, 68.5), Math.toRadians(175))
                 .splineTo(new Vector2d(12, 72), Math.toRadians(180))

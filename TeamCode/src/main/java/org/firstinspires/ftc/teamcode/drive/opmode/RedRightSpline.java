@@ -18,31 +18,31 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-public class BlueLeftSpline extends LinearOpMode {
+public class RedRightSpline extends LinearOpMode {
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(6, 66, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(6, -66, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence trajSec = drive.trajectorySequenceBuilder(startPose)
                 //Find TSE position here
                 .waitSeconds(3)
                 //Some tuning needed to account for different drop off levels
-                .lineToSplineHeading(new Pose2d(6, 24, Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(6, -24, Math.toRadians(0)))
                 //Drop off
                 .waitSeconds(2)
-                .lineToSplineHeading(new Pose2d(6,72, 0))
+                .lineToSplineHeading(new Pose2d(6,-72, 0))
                 .forward(42)
                 //Intake
                 .waitSeconds(3)
                 .back(60)
                 //Without odometry, there becomes error here as battery worsens
-                .splineTo(new Vector2d(-12, 42), Math.toRadians(270))
+                .splineTo(new Vector2d(-12, -42), Math.toRadians(90))
                 //Drop off
                 .waitSeconds(2)
-                .lineToSplineHeading(new Pose2d(-12,72, 0))
+                .lineToSplineHeading(new Pose2d(-12,-72, 0))
                 .forward(60)
 
                 // To the blue square if we must save time

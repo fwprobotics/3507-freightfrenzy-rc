@@ -6,6 +6,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+/*
+Class for controlling intake on robot.
+Single motor. Toggled with button press. Can switch directions.
+By Jake, 1/27/20.
+ */
+
 
 public class Intake {
 
@@ -33,8 +39,7 @@ public class Intake {
 
     }
 
-
-    public Intake(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry){
+    public Intake(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
 
         l = Input;
         realTelemetry = telemetry;
@@ -44,21 +49,19 @@ public class Intake {
 
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
     }
 
-    // TELEOP FUNCTIONS
+    // TELEOP FUNCTIONS ------------------------
 
     // Toggle on and off intake via inputButton
-    public void toggleIntake(boolean inputButton){
+    public void toggleIntake(boolean inputButton) {
         if (inputButton && !inputButtonPressed) {
+            inputButtonPressed = true;
             switch (intakeStatus) {
                 case OFF:
-                    inputButtonPressed = true;
                     intakeStatus = intakeStatuses.ON;
                     break;
                 case ON:
-                    inputButtonPressed = true;
                     intakeStatus = intakeStatuses.OFF;
                     break;
             }
@@ -70,14 +73,14 @@ public class Intake {
     }
 
     // Sets power of intake depending on direction
-    public void runIntake(){
-        if (intakeStatus == intakeStatuses.ON) {
-            intakeMotor.setPower(IntakeConstants.intake_power * direction);
-
-        }
-        else if (intakeStatus == intakeStatuses.OFF) {
-            intakeMotor.setPower(0);
-
+    public void runIntake() {
+        switch (intakeStatus) {
+            case ON:
+                intakeMotor.setPower(IntakeConstants.intake_power * direction);
+                break;
+            case OFF:
+                intakeMotor.setPower(0);
+                break;
         }
     }
 

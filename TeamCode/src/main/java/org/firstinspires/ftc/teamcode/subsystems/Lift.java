@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -12,12 +13,17 @@ public class Lift{
 
     public DcMotor leftLiftMotor;
     public DcMotor rightLiftMotor;
+    public Servo leftHorizLift;
+    public Servo rightHorizLift;
     public LinearOpMode l;
     public Telemetry realTelemetry;
+    //Don't use this
     public double basePos;
     public double bottomPos;
     public double middlePos;
     public double topPos;
+    private boolean toggle = false;
+    private boolean horizExtend = false;
 
 
     public enum liftRunMode {
@@ -25,6 +31,8 @@ public class Lift{
         TELEOP
     }
 
+
+    //Correspond with encoder values for both motors.
     public enum dropoffOptions {
         BASE,
         BOTTOM,
@@ -39,6 +47,8 @@ public class Lift{
 
         leftLiftMotor = hardwareMap.dcMotor.get("leftLiftMotor");
         rightLiftMotor = hardwareMap.dcMotor.get("rightLiftMotor");
+        leftHorizLift = hardwareMap.servo.get("leftHorizontalLiftServo");
+        rightHorizLift = hardwareMap.servo.get("rightHorizontalLiftServo");
 
         // Different motor configurations depending on use case
         switch (runmode) {
@@ -50,10 +60,10 @@ public class Lift{
                 break;
             case TELEOP:
                 leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 rightLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Reverse left side
         }
@@ -106,9 +116,29 @@ public class Lift{
 //        leftLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        leftLiftMotor.setPower(input); //Probably should/can get toned down
 //        }
-    public void jakeTempLiftControl(double input) {
+
+    public void horizontalLiftToggle (boolean input) {
+        if (input) {
+            if (!toggle) {
+                toggle = true;
+                if (horizExtend) {
+                    leftHorizLift.setPosition(0);
+                    rightHorizLift.setPosition(0);
+                } else {
+                    leftHorizLift.setPosition(1);
+                    rightHorizLift.setPosition(1);
+                }
+            }
+        } else {
+            toggle = false;
+        }
+    }
+    public void jakeTempLiftControl(double input, boolean horiz) {
         leftLiftMotor.setPower(input);
         rightLiftMotor.setPower(input);
+        horizontalLiftToggle(horiz);
+        l.telemetry.addData("left encoder", leftLiftMotor.getCurrentPosition());
+        l.telemetry.addData("right encoder", rightLiftMotor.getCurrentPosition());
     }
 
 }

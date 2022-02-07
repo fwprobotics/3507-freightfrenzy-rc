@@ -39,7 +39,7 @@ public class MecanumDrive extends LinearOpMode {
                 intake.directionControl(gamepad1.a);
                 intake.runIntake();
 
-                lift.jakeTempLiftControl(gamepad2.right_stick_y);
+                lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);
 
             }
         }

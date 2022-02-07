@@ -7,9 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /*
-Class for controlling intake on robot.
-Single motor. Toggled with button press. Can switch directions.
-By Jake, 1/27/20.
+Spinner class. Very similar to intake.
  */
 
 

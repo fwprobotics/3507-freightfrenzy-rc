@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -15,8 +16,11 @@ public class Lift {
     public DcMotor rightLiftMotor;
     public Servo leftHorizLift;
     public Servo rightHorizLift;
+    public Servo dumpServo;
+    public ColorSensor color;
     public LinearOpMode l;
     public Telemetry realTelemetry;
+    public dumpPositions dumpPosition;
 
     //Don't use this
 //    public double basePos;
@@ -27,6 +31,7 @@ public class Lift {
     private boolean toggle = false;
     boolean pressed;
     private boolean horizExtend = false;
+    public boolean hasCube = false;
 
 
     public enum liftRunMode {
@@ -34,7 +39,16 @@ public class Lift {
         TELEOP
     }
 
+    public enum dumpPositions {
+        DOWN (0),
+        LITTLE (0.1),
+        DUMP (1);
 
+        private double position;
+        dumpPositions(double position) {this.position = position;}
+
+        private double position() {return position;}
+    }
     /*Correspond with encoder values for both motors.
     public enum dropoffOptions {
         BASE (),
@@ -42,10 +56,10 @@ public class Lift {
         MIDDLE (),
         TOP ();
 
-        private int position;
-        dropoffOptions(int position) {this.position = position;}
+        private double position;
+        dropoffOptions(double position) {this.position = position;}
 
-        private int position() {return position;}
+        private double position() {return position;}
     }
 
      */
@@ -63,6 +77,9 @@ public class Lift {
         rightLiftMotor = hardwareMap.dcMotor.get("rightLiftMotor");
         leftHorizLift = hardwareMap.servo.get("leftHorizontalLiftServo");
         rightHorizLift = hardwareMap.servo.get("rightHorizontalLiftServo");
+        dumpServo = hardwareMap.servo.get("dumper");
+        color = hardwareMap.get(ColorSensor.class, "colorSensor");
+        dumpPosition = dumpPositions.DOWN;
 
         // Different motor configurations depending on use case
         switch (runmode) {
@@ -109,6 +126,21 @@ public class Lift {
         }
     }
 
+    public void colorCheck() {
+        while (l.opModeIsActive()) {
+            if ((color.red() > 1000) && (color.green()>1000)) {
+                hasCube = true;
+                if (dumpPosition == dumpPositions.DUMP) {
+                    dumpPosition = dumpPositions.LITTLE;
+                }
+            } else {
+                hasCube = false;
+                if (dumpPosition == dumpPositions.LITTLE) {
+                    dumpPosition = dumpPositions.DUMP;
+                }
+            }
+        }
+    }
 
     public void extendLift() {
         leftHorizLift.setPosition(0.3);

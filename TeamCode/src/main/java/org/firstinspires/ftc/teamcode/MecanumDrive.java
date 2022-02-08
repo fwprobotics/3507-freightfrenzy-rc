@@ -21,7 +21,7 @@ public class MecanumDrive extends LinearOpMode {
 
         //drivetrain = new Drivetrain(this, hardwareMap, telemetry);
         intake = new Intake(this, hardwareMap, telemetry);
-        lift = new Lift(Lift.liftRunMode.TELEOP, this, hardwareMap, telemetry);
+        //lift = new Lift(Lift.liftRunMode.TELEOP, this, hardwareMap, telemetry);
         spinner = new Spinner(this, hardwareMap, telemetry);
 
         telemetry.addLine("Ready and WAITING :)");
@@ -43,7 +43,7 @@ public class MecanumDrive extends LinearOpMode {
                 intake.runIntake();
 
 
-                lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);
+                //lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);
 
                 spinner.toggleSpinner(gamepad2.x, gamepad2.y);
                 spinner.runSpinner();

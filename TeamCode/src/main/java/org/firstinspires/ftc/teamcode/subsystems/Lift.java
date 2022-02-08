@@ -101,8 +101,8 @@ public class Lift {
 
 
     public void extendLift() {
-        leftHorizLift.setPosition(0.1);
-        rightHorizLift.setPosition(0.9);
+        leftHorizLift.setPosition(0.3);
+        rightHorizLift.setPosition(0.7);
     }
     public void retractLift() {
         leftHorizLift.setPosition(0.9);

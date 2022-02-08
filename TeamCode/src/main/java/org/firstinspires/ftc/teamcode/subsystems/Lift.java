@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
-public class Lift{
+public class Lift {
 
     public DcMotor leftLiftMotor;
     public DcMotor rightLiftMotor;
@@ -25,6 +25,7 @@ public class Lift{
 //    public double topPos;
 
     private boolean toggle = false;
+    boolean pressed;
     private boolean horizExtend = false;
 
 
@@ -46,7 +47,7 @@ public class Lift{
         public static double power_modifier = 0.7;
     }
 
-    public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry){
+    public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
 
         l = Input;
         realTelemetry = telemetry;
@@ -77,24 +78,38 @@ public class Lift{
         }
     }
 
-    public void horizontalLiftToggle (boolean input) {
-        if (input) {
-            // if (!toggle) {
-            toggle = true;
-            if (horizExtend) {
-                leftHorizLift.setPosition(1);
-                rightHorizLift.setPosition(0);
-                horizExtend = false;
-            } else {
-                leftHorizLift.setPosition(1);
-                rightHorizLift.setPosition(0);
-                horizExtend = true;
+    public void horizontalLiftToggle(boolean press) {
+        if (press) {
+            if (!pressed) {
+                if (!toggle) {
+                    toggle = true;
+                } else {
+                    toggle = false;
+                }
             }
-            //}
+            pressed = true;
         } else {
-            toggle = false;
+            pressed = false;
+        }
+
+        if (!toggle) {
+            retractLift();
+        } else {
+            extendLift();
         }
     }
+
+
+    public void extendLift() {
+        leftHorizLift.setPosition(0.1);
+        rightHorizLift.setPosition(0.9);
+    }
+    public void retractLift() {
+        leftHorizLift.setPosition(0.9);
+        rightHorizLift.setPosition(0.1);
+    }
+
+
     public void jakeTempLiftControl(double input, boolean horiz) {
         leftLiftMotor.setPower(input * LiftConstants.power_modifier);
         rightLiftMotor.setPower(input * LiftConstants.power_modifier);

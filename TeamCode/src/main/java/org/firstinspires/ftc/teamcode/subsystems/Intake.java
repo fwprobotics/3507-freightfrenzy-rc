@@ -21,19 +21,32 @@ public class Intake {
     private Telemetry realTelemetry;
 
     public enum intakeStatuses {
-        ON,
-        OFF
+        //Intkae at the power
+        ON (1),
+        //Do not intake
+        OFF (0);
+
+        private int status;
+        intakeStatuses(int status) {this.status = status;}
+
+        private int status() {return status;}
     }
 
     public enum intakeDirections {
-        FORWARD,
-        REVERSE
+        //Intake forward
+        FORWARD (1),
+        //Intake backward
+        REVERSE (-1);
+
+        private final int direction;
+        intakeDirections(int direction) {this.direction = direction; }
+
+        private int direction() {return direction;}
     }
 
     private intakeStatuses intakeStatus = intakeStatuses.OFF;
     public intakeDirections intakeDirection = intakeDirections.FORWARD;
     private boolean inputButtonPressed;
-    private int direction = -1;
 
     @Config
     public static class IntakeConstants {
@@ -75,24 +88,16 @@ public class Intake {
 
     // Sets power of intake depending on direction
     public void runIntake() {
-        switch (intakeStatus) {
-            case ON:
-                intakeMotor.setPower(IntakeConstants.intake_power * direction);
-                break;
-            case OFF:
-                intakeMotor.setPower(0);
-                break;
-        }
+        //Gets value from whatever the direction and status enums are to determine direction and on/off
+        intakeMotor.setPower(IntakeConstants.intake_power * intakeDirection.direction() * intakeStatus.status());
     }
 
     // While input button is held down intake is reversed
     // Direction is used to modifity output power (negative or positive 1)
     public void directionControl(boolean inputButton) {
         if (!inputButton) {
-            direction = 1;
             intakeDirection = intakeDirections.FORWARD;
         } else {
-            direction = -1;
             intakeDirection = intakeDirections.REVERSE;
         }
 

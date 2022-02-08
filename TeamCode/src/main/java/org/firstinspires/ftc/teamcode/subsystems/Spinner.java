@@ -18,25 +18,45 @@ public class Spinner {
     private Telemetry realTelemetry;
 
     public enum spinnerStatuses {
-        ON,
-        OFF
+        //Operate at full power
+        ON(1),
+        //Don't spin
+        OFF(0);
+
+        private int status;
+
+        spinnerStatuses(int status) {
+            this.status = status;
+        }
+
+        private int status() {
+            return status;
+        }
     }
 
     public enum spinnerDirections {
-        FORWARD,
-        REVERSE
+        FORWARD(1),
+        REVERSE(-1);
+
+        private int direction;
+
+        spinnerDirections(int direction) {
+            this.direction = direction;
+        }
+
+        private int direction() {
+            return direction;
+        }
     }
 
     private spinnerStatuses spinnerStatus = spinnerStatuses.OFF;
     public spinnerDirections spinnerDirection = spinnerDirections.FORWARD;
-    private boolean toggle;
-    private boolean toggle2;
-    private int direction = -1;
+    private boolean toggle = false;
+    private boolean pressed = false;
 
     public static class SpinnerConstants {
         public static double spinner_power = 1.0;
         public static double less_power = 0.5;
-
     }
 
     public Spinner(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
@@ -53,56 +73,31 @@ public class Spinner {
 
     // TELEOP FUNCTIONS ------------------------
 
-    // Toggle on and off intake via inputButton
-    public void toggleSpinner(boolean input) {
-        if (input) {
-            if (!toggle) {
-                toggle = true;
-                switch (spinnerStatus) {
-                    case OFF:
-                        spinnerStatus = Spinner.spinnerStatuses.ON;
-                        break;
-                    case ON:
-                        spinnerStatus = Spinner.spinnerStatuses.OFF;
-                        break;
-                }
+    // Toggle on and off intake via buttons and y
+    public void toggleSpinner(boolean x, boolean y) {
+
+        //Changes direction based on which is pressed
+        if (x &! y) {spinnerDirection=spinnerDirections.FORWARD;}
+        if (y &! x) {spinnerDirection=spinnerDirections.REVERSE;}
+        //if either are pressed, say a button is pressed and change the toggle it we haven't
+        if (x || y) {
+            if (!pressed) {
+                toggle = !toggle;
             }
+            pressed = true;
         } else {
-            toggle = false;
+            pressed = false;
+        }
+
+        if (toggle) {
+            spinnerStatus=spinnerStatuses.ON;
+        } else {
+            spinnerStatus=spinnerStatuses.OFF;
         }
     }
 
     // Sets power of intake depending on direction
     public void runSpinner() {
-        switch (spinnerStatus) {
-            case ON:
-                spinnerMotor.setPower(SpinnerConstants.spinner_power * direction);
-                break;
-            case OFF:
-                spinnerMotor.setPower(0);
-                break;
-        }
+        spinnerMotor.setPower(SpinnerConstants.spinner_power * spinnerDirection.direction() * spinnerStatus.status());
     }
-
-    // While input button is held down intake is reversed
-    public void directionControl(boolean input) {
-        if (input) {
-            if (!toggle2) {
-                toggle2 = true;
-                switch (spinnerDirection) {
-                    case FORWARD:
-                        spinnerDirection = Spinner.spinnerDirections.REVERSE;
-                        direction = 1;
-                        break;
-                    case REVERSE:
-                        spinnerDirection = Spinner.spinnerDirections.FORWARD;
-                        direction = -1;
-                        break;
-                }
-            }
-        } else {
-            toggle2 = false;
-        }
-    }
-
 }

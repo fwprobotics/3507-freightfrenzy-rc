@@ -35,13 +35,20 @@ public class Lift {
     }
 
 
-    //Correspond with encoder values for both motors.
+    /*Correspond with encoder values for both motors.
     public enum dropoffOptions {
-        BASE,
-        BOTTOM,
-        MIDDLE,
-        TOP
+        BASE (),
+        BOTTOM (),
+        MIDDLE (),
+        TOP ();
+
+        private int position;
+        dropoffOptions(int position) {this.position = position;}
+
+        private int position() {return position;}
     }
+
+     */
 
     public static class LiftConstants {
         public static double power_modifier = 0.7;
@@ -59,12 +66,19 @@ public class Lift {
 
         // Different motor configurations depending on use case
         switch (runmode) {
-            case AUTONOMOUS:
+/*            case AUTONOMOUS:
                 // TODO this needs serious work
-//                leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); // Hopefully switch all these to run using encoder
-//                leftLiftMotor.setTargetPosition(0);
-//                leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftLiftMotor.setTargetPosition(0);
+                leftLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightLiftMotor.setTargetPosition(0);
+                rightLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 break;
+                */
             case TELEOP:
                 leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

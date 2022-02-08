@@ -89,6 +89,7 @@ public class Spinner {
             pressed = false;
         }
 
+        //Turns the spinner on if we have toggled it on and off if we toggled it off
         if (toggle) {
             spinnerStatus=spinnerStatuses.ON;
         } else {

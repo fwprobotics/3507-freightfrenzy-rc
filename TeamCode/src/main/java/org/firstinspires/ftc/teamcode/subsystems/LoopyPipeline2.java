@@ -11,7 +11,6 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 public class LoopyPipeline2 extends OpenCvPipeline {
-    
     //Defines possible position outcomes
     public enum Position
     {

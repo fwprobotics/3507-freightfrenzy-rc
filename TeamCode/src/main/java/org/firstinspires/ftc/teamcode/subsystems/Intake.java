@@ -21,7 +21,7 @@ public class Intake {
     private Telemetry realTelemetry;
 
     public enum intakeStatuses {
-        //Intkae at the power
+        //Intake at the power
         ON (1),
         //Do not intake
         OFF (0);

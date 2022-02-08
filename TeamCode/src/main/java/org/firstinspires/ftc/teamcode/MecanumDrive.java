@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Spinner;
 
 @TeleOp(name = "MecanumDrive", group = "TeleOp")
 public class MecanumDrive extends LinearOpMode {
@@ -13,6 +14,7 @@ public class MecanumDrive extends LinearOpMode {
     Drivetrain drivetrain;
     Intake intake;
     Lift lift;
+    Spinner spinner;
 
     @Override
     public void runOpMode() {
@@ -20,6 +22,7 @@ public class MecanumDrive extends LinearOpMode {
         //drivetrain = new Drivetrain(this, hardwareMap, telemetry);
         intake = new Intake(this, hardwareMap, telemetry);
         lift = new Lift(Lift.liftRunMode.TELEOP, this, hardwareMap, telemetry);
+        spinner = new Spinner(this, hardwareMap, telemetry);
 
         telemetry.addLine("Ready and WAITING :)");
         telemetry.update();
@@ -39,7 +42,11 @@ public class MecanumDrive extends LinearOpMode {
                 intake.directionControl(gamepad1.a);
                 intake.runIntake();
 
+
                 lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);
+
+                spinner.toggleSpinner(gamepad2.x, gamepad2.y);
+                spinner.runSpinner();
                 telemetry.update();
 
             }

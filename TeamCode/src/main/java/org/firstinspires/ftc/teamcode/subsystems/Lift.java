@@ -81,11 +81,7 @@ public class Lift {
     public void horizontalLiftToggle(boolean press) {
         if (press) {
             if (!pressed) {
-                if (!toggle) {
-                    toggle = true;
-                } else {
-                    toggle = false;
-                }
+                toggle = !toggle;
             }
             pressed = true;
         } else {

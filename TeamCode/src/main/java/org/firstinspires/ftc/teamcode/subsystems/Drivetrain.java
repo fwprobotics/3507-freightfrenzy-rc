@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.motors.RevRobotics20HdHexMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,6 +19,7 @@ public class Drivetrain {
     private static final MotorConfigurationType MOTOR_CONFIG =
             MotorConfigurationType.getMotorType(RevRobotics20HdHexMotor.class);
 
+    @Config
     public static class TeleOpDTConstants {
         // Biases so we don't go too fast
         public static double turning_modifier = 0.70;
@@ -26,7 +27,6 @@ public class Drivetrain {
         public static double x_modifier = 0.85;
         public static double speedFactor = 0.8;
         public static double power_modifier = 0.7;
-
     }
 
 

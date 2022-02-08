@@ -17,11 +17,13 @@ public class Lift{
     public Servo rightHorizLift;
     public LinearOpMode l;
     public Telemetry realTelemetry;
+
     //Don't use this
-    public double basePos;
-    public double bottomPos;
-    public double middlePos;
-    public double topPos;
+//    public double basePos;
+//    public double bottomPos;
+//    public double middlePos;
+//    public double topPos;
+
     private boolean toggle = false;
     private boolean horizExtend = false;
 
@@ -38,6 +40,10 @@ public class Lift{
         BOTTOM,
         MIDDLE,
         TOP
+    }
+
+    public static class LiftConstants {
+        public static double power_modifier = 0.7;
     }
 
     public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry){
@@ -69,6 +75,32 @@ public class Lift{
 
                 leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Reverse left side
         }
+    }
+
+    public void horizontalLiftToggle (boolean input) {
+        if (input) {
+            // if (!toggle) {
+            toggle = true;
+            if (horizExtend) {
+                leftHorizLift.setPosition(1);
+                rightHorizLift.setPosition(0);
+                horizExtend = false;
+            } else {
+                leftHorizLift.setPosition(1);
+                rightHorizLift.setPosition(0);
+                horizExtend = true;
+            }
+            //}
+        } else {
+            toggle = false;
+        }
+    }
+    public void jakeTempLiftControl(double input, boolean horiz) {
+        leftLiftMotor.setPower(input * LiftConstants.power_modifier);
+        rightLiftMotor.setPower(input * LiftConstants.power_modifier);
+        horizontalLiftToggle(horiz);
+        l.telemetry.addData("left encoder", leftLiftMotor.getCurrentPosition());
+        l.telemetry.addData("right encoder", rightLiftMotor.getCurrentPosition());
     }
 
 //    public void setPosition(dropoffOptions position){
@@ -119,30 +151,5 @@ public class Lift{
 //        leftLiftMotor.setPower(input); //Probably should/can get toned down
 //        }
 
-    public void horizontalLiftToggle (boolean input) {
-        if (input) {
-           // if (!toggle) {
-                toggle = true;
-                if (horizExtend) {
-                    leftHorizLift.setPosition(1);
-                    rightHorizLift.setPosition(0);
-                    horizExtend = false;
-                } else {
-                    leftHorizLift.setPosition(1);
-                    rightHorizLift.setPosition(0);
-                    horizExtend = true;
-                }
-            //}
-        } else {
-            toggle = false;
-        }
-    }
-    public void jakeTempLiftControl(double input, boolean horiz) {
-        leftLiftMotor.setPower(input*0.7);
-        rightLiftMotor.setPower(input*0.7);
-        horizontalLiftToggle(horiz);
-        l.telemetry.addData("left encoder", leftLiftMotor.getCurrentPosition());
-        l.telemetry.addData("right encoder", rightLiftMotor.getCurrentPosition());
-    }
 
 }

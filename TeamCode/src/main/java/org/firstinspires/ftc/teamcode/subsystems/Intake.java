@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -34,9 +35,9 @@ public class Intake {
     private boolean inputButtonPressed;
     private int direction = -1;
 
+    @Config
     public static class IntakeConstants {
         public static double intake_power = 1.0;
-
     }
 
     public Intake(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
@@ -85,6 +86,7 @@ public class Intake {
     }
 
     // While input button is held down intake is reversed
+    // Direction is used to modifity output power (negative or positive 1)
     public void directionControl(boolean inputButton) {
         if (!inputButton) {
             direction = 1;

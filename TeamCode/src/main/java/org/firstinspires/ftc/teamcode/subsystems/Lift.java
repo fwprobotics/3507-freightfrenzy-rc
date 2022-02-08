@@ -59,9 +59,11 @@ public class Lift{
 //                leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 break;
             case TELEOP:
+                leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 leftLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+                rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rightLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -119,23 +121,25 @@ public class Lift{
 
     public void horizontalLiftToggle (boolean input) {
         if (input) {
-            if (!toggle) {
+           // if (!toggle) {
                 toggle = true;
                 if (horizExtend) {
-                    leftHorizLift.setPosition(0);
+                    leftHorizLift.setPosition(1);
                     rightHorizLift.setPosition(0);
+                    horizExtend = false;
                 } else {
                     leftHorizLift.setPosition(1);
-                    rightHorizLift.setPosition(1);
+                    rightHorizLift.setPosition(0);
+                    horizExtend = true;
                 }
-            }
+            //}
         } else {
             toggle = false;
         }
     }
     public void jakeTempLiftControl(double input, boolean horiz) {
-        leftLiftMotor.setPower(input);
-        rightLiftMotor.setPower(input);
+        leftLiftMotor.setPower(input*0.7);
+        rightLiftMotor.setPower(input*0.7);
         horizontalLiftToggle(horiz);
         l.telemetry.addData("left encoder", leftLiftMotor.getCurrentPosition());
         l.telemetry.addData("right encoder", rightLiftMotor.getCurrentPosition());

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -64,8 +65,13 @@ public class Lift {
 
      */
 
+    @Config
     public static class LiftConstants {
         public static double power_modifier = 0.7;
+        public static double leftExtend = 0.3;
+        public static double rightExtend = 1;
+        public static double leftRetract = 1;
+        public static double rightRetract = 0;
     }
 
     public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
@@ -143,12 +149,12 @@ public class Lift {
     }
 
     public void extendLift() {
-        leftHorizLift.setPosition(0.3);
-        rightHorizLift.setPosition(0.7);
+        leftHorizLift.setPosition(LiftConstants.leftExtend);
+        rightHorizLift.setPosition(LiftConstants.rightExtend);
     }
     public void retractLift() {
-        leftHorizLift.setPosition(0.9);
-        rightHorizLift.setPosition(0.1);
+        leftHorizLift.setPosition(LiftConstants.leftRetract);
+        rightHorizLift.setPosition(LiftConstants.rightRetract);
     }
 
 

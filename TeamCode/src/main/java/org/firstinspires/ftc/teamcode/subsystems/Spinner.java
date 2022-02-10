@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import com.acmerobotics.dashboard.config.Config;
+
 
 /*
 Spinner class. Very similar to intake.
@@ -54,9 +56,10 @@ public class Spinner {
     private boolean toggle = false;
     private boolean pressed = false;
 
+    @Config
     public static class SpinnerConstants {
-        public static double spinner_power = 1.0;
-        public static double less_power = 0.5;
+        public static double spinner_power = 0.8;
+        public static double less_power = 0.4;
     }
 
     public Spinner(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {

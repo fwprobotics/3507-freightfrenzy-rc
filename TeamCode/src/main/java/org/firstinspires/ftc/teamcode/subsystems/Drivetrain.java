@@ -22,11 +22,11 @@ public class Drivetrain {
     @Config
     public static class TeleOpDTConstants {
         // Biases so we don't go too fast
-        public static double turning_modifier = 0.70;
-        public static double y_modifier = 0.95;
-        public static double x_modifier = 0.85;
+        public static double turning_modifier = 1;
+        public static double y_modifier = 1;
+        public static double x_modifier = 1;
         public static double speedFactor = 0.8;
-        public static double power_modifier = 0.7;
+        public static double power_modifier = 1;
     }
 
 

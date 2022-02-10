@@ -69,8 +69,9 @@ public class Lift {
     public static class LiftConstants {
         public static double power_modifier = 0.7;
         public static double leftExtend = 0.3;
-        public static double rightExtend = 1;
         public static double leftRetract = 1;
+
+        public static double rightExtend = 0.65;
         public static double rightRetract = 0;
     }
 

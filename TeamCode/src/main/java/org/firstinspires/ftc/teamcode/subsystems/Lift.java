@@ -104,14 +104,13 @@ public class Lift {
                 toggle = !toggle;
             }
             pressed = true;
+            if (!toggle) {
+                retractLift();
+            } else {
+                extendLift();
+            }
         } else {
             pressed = false;
-        }
-
-        if (!toggle) {
-            retractLift();
-        } else {
-            extendLift();
         }
     }
 

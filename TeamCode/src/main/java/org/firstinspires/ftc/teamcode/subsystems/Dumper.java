@@ -22,12 +22,6 @@ public class Dumper {
     public dumpPositions dumpPosition;
     public Intake intake;
 
-    //Don't use this
-//    public double basePos;
-//    public double bottomPos;
-//    public double middlePos;
-//    public double topPos;
-
     boolean pressed;
     private boolean horizExtend = false;
     public boolean hasCube = false;

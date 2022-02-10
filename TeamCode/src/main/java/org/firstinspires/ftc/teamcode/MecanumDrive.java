@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Spinner;
+import org.firstinspires.ftc.teamcode.subsystems.Dumper;
 
 @TeleOp(name = "MecanumDrive", group = "TeleOp")
 public class MecanumDrive extends LinearOpMode {
@@ -15,6 +16,7 @@ public class MecanumDrive extends LinearOpMode {
     Intake intake;
     Lift lift;
     Spinner spinner;
+    Dumper dumper;
 
     @Override
     public void runOpMode() {
@@ -23,6 +25,7 @@ public class MecanumDrive extends LinearOpMode {
         intake = new Intake(this, hardwareMap, telemetry);
         lift = new Lift(Lift.liftRunMode.TELEOP, this, hardwareMap, telemetry);
         spinner = new Spinner(this, hardwareMap, telemetry);
+        dumper = new Dumper(this, hardwareMap, intake, telemetry);
 
         telemetry.addLine("Ready and WAITING :)");
         telemetry.update();
@@ -41,6 +44,7 @@ public class MecanumDrive extends LinearOpMode {
                 intake.toggleIntake(gamepad1.b);
                 intake.directionControl(gamepad1.a);
                 intake.runIntake();
+                dumper.dumpToggle(gamepad2.b);
 
 
                 lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);

@@ -38,7 +38,7 @@ public class MecanumDrive extends LinearOpMode {
             telemetry.clearAll();
 
             while (opModeIsActive()) {
-                dumper.dumpModerator();
+//                dumper.dumpModerator();
 
                 drivetrain.JoystickMovement(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.left_bumper);
 
@@ -46,6 +46,7 @@ public class MecanumDrive extends LinearOpMode {
                 intake.directionControl(gamepad1.a);
                 intake.runIntake();
                 dumper.dumpToggle(gamepad2.b);
+                dumper.midToggle(gamepad2.left_bumper);
 
 
                 lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Dumper {
 
     public Servo dumpServo;
+    public Servo kicker;
     public ColorSensor color;
     public LinearOpMode l;
     public Telemetry realTelemetry;
@@ -28,14 +30,22 @@ public class Dumper {
 
 
     public enum dumpPositions {
-        DOWN (0),
-        LITTLE (0.1),
-        DUMP (1);
+        DOWN (DumperConstants.base),
+        LITTLE (DumperConstants.picked),
+        DUMP (DumperConstants.drop);
 
         private double position;
         dumpPositions(double position) {this.position = position;}
 
         private double position() {return position;}
+    }
+
+    @Config
+    public static class DumperConstants {
+        public static double kickOff = 0.3;
+        public static double base = 0.5;
+        public static double picked = 0.6;
+        public static double drop = 1;
     }
 
 
@@ -45,6 +55,7 @@ public class Dumper {
         realTelemetry = telemetry;
 
         dumpServo = hardwareMap.servo.get("dumper");
+        kicker = hardwareMap.servo.get("kicker");
         color = hardwareMap.get(ColorSensor.class, "colorSensor");
         dumpPosition = dumpPositions.DOWN;
 
@@ -69,6 +80,12 @@ public class Dumper {
                 intake.directionControl(true);
                 intake.runIntake();
             }
+            if (dumpPosition == dumpPositions.DUMP) {
+                kicker.setPosition(DumperConstants.kickOff);
+            } else {
+                kicker.setPosition(0);
+            }
+            l.telemetry.addData("Have a block?", hasCube);
         }
     }
 

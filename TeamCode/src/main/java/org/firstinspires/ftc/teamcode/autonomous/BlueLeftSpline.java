@@ -68,42 +68,6 @@ public class BlueLeftSpline extends LinearOpMode {
                 .waitSeconds(2)
                 .lineToSplineHeading(new Pose2d(6,72, 0))
                 .forward(28)
-                //Move forward a semi-random extra amount
-                /*
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    frontleft.setPower(.8);
-                    frontright.setPower(.8);
-                    backleft.setPower(.8);
-                    backright.setPower(.8);
-
-                })
-                .waitSeconds(0.5+Math.random())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    frontleft.setPower(0);
-                    frontright.setPower(0);
-                    backleft.setPower(0);
-                    backright.setPower(0);
-                })
-                //Intake
-
-                .waitSeconds(3)
-                //Should always bring us back to te same place
-                .lineToConstantHeading(new Vector2d(-14,72))
-                //Without odometry, there becomes error here as battery worsens
-                .splineTo(new Vector2d(-16, 42), Math.toRadians(270))
-                //Drop off
-                .waitSeconds(2)
-                .lineToSplineHeading(new Pose2d(-12,72, 0))
-                .forward(60)
-
-                // To the blue square if we must save time
-                /* .strafeRight(30)
-                .splineTo(new Vector2d(-66,36), Math.toRadians(270))
-                */
                 .build();
 
 

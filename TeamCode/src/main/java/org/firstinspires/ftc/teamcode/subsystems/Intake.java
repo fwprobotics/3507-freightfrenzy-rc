@@ -44,7 +44,7 @@ public class Intake {
         private int direction() {return direction;}
     }
 
-    private intakeStatuses intakeStatus = intakeStatuses.OFF;
+    public intakeStatuses intakeStatus = intakeStatuses.OFF;
     public intakeDirections intakeDirection = intakeDirections.FORWARD;
     private boolean inputButtonPressed;
 

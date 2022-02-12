@@ -19,14 +19,9 @@ public class Lift {
     public LinearOpMode l;
     public Telemetry realTelemetry;
 
-    //Don't use this
-//    public double basePos;
-//    public double bottomPos;
-//    public double middlePos;
-//    public double topPos;
-
     private boolean toggle = false;
     boolean pressed;
+    boolean pressed2;
     private boolean horizExtend = false;
 
 
@@ -114,6 +109,17 @@ public class Lift {
         }
     }
 
+    public void midLiftToggle (boolean press){
+        if (press) {
+            if (!pressed2) {
+               toMid();
+            }
+            pressed2 = true;
+        } else {
+            pressed2 = false;
+        }
+    }
+
     public void extendLift() {
         leftHorizLift.setPosition(LiftConstants.leftExtend);
         rightHorizLift.setPosition(LiftConstants.rightExtend);
@@ -154,18 +160,20 @@ public class Lift {
         rightLiftMotor.setPower(0.5);
     }
 
-    public void teleOpControl(double input, boolean up, boolean mid, boolean down, boolean horiz) { // Rename inputs based on real buttons we choose
+    public void teleOpControl(double input, boolean up, boolean middle, boolean down, boolean horiz, boolean midextend) { // Rename inputs based on real buttons we choose
         horizontalLiftToggle(horiz);
+        midLiftToggle(midextend);
+
         if (down) {
             setPosition(dropoffOptions.BOTTOM);
         }
         if (up) {
             setPosition(dropoffOptions.TOP);
         }
-        if (mid) {
+        if (middle) {
             setPosition(dropoffOptions.MIDDLE);
         }
-        if (!down & !up & !mid  & !leftLiftMotor.isBusy() & !rightLiftMotor.isBusy()) {
+        if (!down & !up & !middle  & !leftLiftMotor.isBusy() & !rightLiftMotor.isBusy()) {
 
             leftLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

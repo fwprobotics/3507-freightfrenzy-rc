@@ -104,11 +104,9 @@ public class RedRightSpline extends LinearOpMode {
         lift.toMid();
         dumper.autoMove(Dumper.dumpPositions.DUMP);
         sleep(200);
-        dumper.kickToggle(true);
-        dumper.kickToggle(false);
+        dumper.moveKicker(true);
         sleep(500);
-        dumper.kickToggle(true);
-        dumper.kickToggle(false);
+        dumper.moveKicker(false);
         dumper.autoMove(Dumper.dumpPositions.LITTLE);
         lift.retractLift();
         lift.setAutoPosition(Lift.dropoffOptions.BOTTOM);
@@ -122,15 +120,15 @@ public class RedRightSpline extends LinearOpMode {
                 .build();
 
         drive.followTrajectorySequence(traj2);
-        intake.toggleIntake(true);
-        intake.toggleIntake(false);
+        intake.intakeStatus = Intake.intakeStatuses.ON;
         intake.runIntake();
 
         while (dumper.hasCube) {
             drivetrain.JoystickMovement(0.5, 0, 0,false);
             dumper.dumpModerator();
         }
-        intake.directionControl(true);
+        intake.intakeDirection = Intake.intakeDirections.REVERSE;
+        intake.runIntake();
 
         drive.updatePoseEstimate();
         Pose2d NewPose2 = drive.getPoseEstimate();
@@ -142,17 +140,15 @@ public class RedRightSpline extends LinearOpMode {
                 .build();
 
         drive.followTrajectorySequence(newTraj);
-        intake.toggleIntake(true);
-        intake.toggleIntake(false);
+        intake.intakeStatus = Intake.intakeStatuses.OFF;
+        intake.runIntake();
         lift.setAutoPosition(Lift.dropoffOptions.TOP);
         lift.toMid();
         dumper.autoMove(Dumper.dumpPositions.DUMP);
         sleep(200);
-        dumper.kickToggle(true);
-        dumper.kickToggle(false);
+        dumper.moveKicker(true);
         sleep(500);
-        dumper.kickToggle(true);
-        dumper.kickToggle(false);
+        dumper.moveKicker(false);
         dumper.autoMove(Dumper.dumpPositions.LITTLE);
         lift.retractLift();
         lift.setAutoPosition(Lift.dropoffOptions.BOTTOM);

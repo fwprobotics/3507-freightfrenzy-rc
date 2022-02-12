@@ -131,6 +131,14 @@ public class Dumper {
         }
     }
 
+    public void moveKicker(boolean kick){
+        if (kick) {
+            kicker.setPosition(DumperConstants.kickOff);
+        } else {
+            kicker.setPosition(DumperConstants.kickIn);
+        }
+    }
+
 //        public void midToggle(boolean press) {
 //            if (press) {
 //                if (!pressed2) {

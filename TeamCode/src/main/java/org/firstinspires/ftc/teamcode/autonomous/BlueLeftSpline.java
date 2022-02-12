@@ -101,7 +101,8 @@ public class BlueLeftSpline extends LinearOpMode {
                 .splineTo(new Vector2d(-16, 42), Math.toRadians(270))
                 //Drop off
                 .waitSeconds(2)
-                .lineToSplineHeading(new Pose2d(-12,72, 0))
+                .lineToSplineHeading(new Pose2d(-12,73, 0))
+                .waitSeconds(0.1)
                 .forward(60)
                 .build();
         drive.followTrajectorySequence(newTraj);

@@ -45,8 +45,8 @@ public class MecanumDrive extends LinearOpMode {
                 intake.toggleIntake(gamepad1.b);
                 intake.directionControl(gamepad1.a);
                 intake.runIntake();
-                dumper.dumpToggle(gamepad2.b);
-                dumper.midToggle(gamepad2.left_bumper);
+                dumper.dumpToggle(gamepad2.left_bumper);
+                dumper.kickToggle(gamepad2.right_bumper);
 
 
                 lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);

@@ -51,11 +51,11 @@ public class Lift {
     @Config
     public static class LiftConstants {
         public static double power_modifier = 0.5;
-        public static double leftExtend = 0.45;
-        public static double leftRetract = 0.6;
+        public static double leftExtend = 0.41;
+        public static double leftRetract = 1;
 
-        public static double rightExtend = 0.6;
-        public static double rightRetract = 0.45;
+        public static double rightExtend = 0.65;
+        public static double rightRetract = 0.2;
     }
 
     public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {

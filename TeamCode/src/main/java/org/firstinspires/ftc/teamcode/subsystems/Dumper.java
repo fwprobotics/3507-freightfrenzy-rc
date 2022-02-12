@@ -26,7 +26,7 @@ public class Dumper {
     //public Intake intake;
 
     boolean pressed;
-    public boolean toggle2;
+    public boolean toggle2 = false;
     boolean pressed2;
     private boolean horizExtend = false;
     public boolean hasCube = false;
@@ -45,10 +45,11 @@ public class Dumper {
 
     @Config
     public static class DumperConstants {
-        public static double kickOff = 0.3;
+        public static double kickOff = 0.6;
+        public static double kickIn = 0.4;
         public static double base = 1;
         public static double mid = 0.6;
-        public static double drop = 0.2;
+        public static double drop = 0.3;
     }
 
 
@@ -75,17 +76,6 @@ public class Dumper {
             } else {
                 hasCube = false;
             }
-            dumpServo.setPosition(dumpPosition.position());
-
-            if (!(dumpPosition == dumpPositions.DOWN)) {
-//                intake.directionControl(true);
-//                intake.runIntake();
-            }
-            if (dumpPosition == dumpPositions.DUMP) {
-                kicker.setPosition(DumperConstants.kickOff);
-            } else {
-                kicker.setPosition(0);
-            }
             l.telemetry.addData("Have a block?", hasCube);
     }
 
@@ -96,39 +86,62 @@ public class Dumper {
                     if (lastDump == dumpPositions.DUMP) {
                         dumpPosition = dumpPositions.DOWN;
                         lastDump = dumpPositions.DOWN;
+
                     } else {
                         dumpPosition = dumpPositions.DUMP;
                         lastDump = dumpPositions.DUMP;
+
                     }
                 } else {
                     dumpPosition = dumpPositions.LITTLE;
+
                 }
             }
             pressed = true;
             dumpServo.setPosition(dumpPosition.position());
+            if (dumpPosition == dumpPositions.DUMP) {
+                kicker.setPosition(DumperConstants.kickOff);
+            } else {
+                kicker.setPosition(DumperConstants.kickIn);
+            }
         } else {
             pressed = false;
         }
     }
 
-        public void midToggle(boolean press) {
-            if (press) {
-                if (!pressed2) {
-                    toggle2 = !toggle2;
-                }
-                pressed2 = true;
-                if (!toggle2) {
-                    dumpPosition = dumpPositions.LITTLE;
-                    kicker.setPosition(DumperConstants.kickOff);
-                }
-                dumpServo.setPosition(dumpPosition.position());
+    public void kickToggle(boolean press) {
+        if (press) {
+            if (!pressed2) {
+                toggle2 = !toggle2;
+        }
+            pressed2 = true;
+            if (toggle2) {
+                kicker.setPosition(DumperConstants.kickOff);
             } else {
-                pressed2 = false;
+                kicker.setPosition(DumperConstants.kickIn);
             }
 
-
-
+        } else {
+            pressed2 = false;
+        }
     }
 
+//        public void midToggle(boolean press) {
+//            if (press) {
+//                if (!pressed2) {
+//                    toggle2 = !toggle2;
+//
+//                }
+//                pressed2 = true;
+//                if (!toggle2) {
+//                    dumpPosition = dumpPositions.LITTLE;
+//                    kicker.setPosition(0);
+//                }
+//                dumpServo.setPosition(dumpPosition.position());
+//            } else {
+//                pressed2 = false;
+//            }
+//
+//    }
 
 }

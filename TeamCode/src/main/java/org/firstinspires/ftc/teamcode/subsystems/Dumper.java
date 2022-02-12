@@ -45,7 +45,7 @@ public class Dumper {
 
     @Config
     public static class DumperConstants {
-        public static double kickOff = 0.45;
+        public static double kickOff = 0.39;
         public static double kickIn = 0.6;
         public static double base = 1;
         public static double mid = 0.6;
@@ -77,6 +77,8 @@ public class Dumper {
                 hasCube = false;
             }
             l.telemetry.addData("Have a block?", hasCube);
+            l.telemetry.addData("Red", color.red());
+            l.telemetry.addData("Green", color.red());
     }
 
     public void dumpToggle(boolean press) {

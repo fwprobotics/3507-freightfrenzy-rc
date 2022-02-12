@@ -41,6 +41,8 @@ public class RedLeftSpline extends LinearOpMode {
 
         Pose2d startPose = new Pose2d(-42, -66, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
+        initCV();
+
 
         TrajectorySequence trajSec = drive.trajectorySequenceBuilder(startPose)
                 //Find TSE position here
@@ -90,7 +92,7 @@ public class RedLeftSpline extends LinearOpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         //Sets our pipeline to view images through as the one we want
         //(Boundary between regions 1 and 2, Boundary between 2 and 3, Far left, Far top, Far right, Far bottom, opmode, the side we're on)
-        pipeline = new LoopyPipeline2(170, 230, 120, 150, 300, 190, this);
+        pipeline = new LoopyPipeline2(170, 255, 110, 125, 300, 190, this);
         webcam.setPipeline(pipeline);
 
         // Turns on the webcam

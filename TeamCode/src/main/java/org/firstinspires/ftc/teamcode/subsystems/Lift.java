@@ -23,6 +23,7 @@ public class Lift {
     boolean pressed;
     boolean pressed2;
     private boolean horizExtend = false;
+    public extensionOptions extensionOption = extensionOptions.RETRACT;
 
 
     public enum liftRunMode {
@@ -32,8 +33,8 @@ public class Lift {
 
     public enum dropoffOptions {
         BOTTOM (0),
-        MIDDLE (560),
-        TOP (1290);
+        MIDDLE (-560),
+        TOP (-1290);
 
         public int position;
         dropoffOptions(int position) {this.position = position;}
@@ -41,18 +42,34 @@ public class Lift {
         public int position() {return position;}
     }
 
+    public enum extensionOptions {
+        RETRACT (LiftConstants.leftRetract, LiftConstants.rightRetract),
+        MIDDLE (LiftConstants.midLeftExt, LiftConstants.midRightExt),
+        EXTEND (LiftConstants.leftExtend, LiftConstants.rightExtend);
+
+        public double leftPos;
+        public double rightPos;
+        extensionOptions(double leftPos, double rightPos) {
+            this.leftPos = leftPos;
+            this.rightPos = rightPos;
+        }
+
+        public double leftPos() {return leftPos();}
+        public double rightPos() {return rightPos();}
+    }
+
 
     @Config
     public static class LiftConstants {
         public static double power_modifier = 0.5;
-        public static double leftExtend = 0.41;
+        public static double leftExtend = 0.43;
         public static double leftRetract = 1;
 
-        public static double rightExtend = 0.65;
+        public static double rightExtend = 0.63;
         public static double rightRetract = 0.2;
 
-        public static double midLeftExt = 0.61;
-        public static double midRightExt = 0.45;
+        public static double midLeftExt = 0.5;
+        public static double midRightExt = 0.56;
     }
 
     public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
@@ -68,11 +85,11 @@ public class Lift {
         // Different motor configurations depending on use case
         switch (runmode) {
            case AUTONOMOUS:
-
                 leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 leftLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 leftLiftMotor.setTargetPosition(0);
                 leftLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
                 rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rightLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -99,11 +116,12 @@ public class Lift {
                 toggle = !toggle;
             }
             pressed = true;
-            if (!toggle) {
-                retractLift();
+            if (extensionOption == extensionOptions.EXTEND) {
+                extensionOption = extensionOptions.RETRACT;
             } else {
-                extendLift();
+                extensionOption = extensionOptions.EXTEND;
             }
+            moveHorizLift(extensionOption);
         } else {
             pressed = false;
         }
@@ -112,7 +130,12 @@ public class Lift {
     public void midLiftToggle (boolean press){
         if (press) {
             if (!pressed2) {
-               toMid();
+               if (extensionOption == extensionOptions.MIDDLE) {
+                   extensionOption = extensionOptions.RETRACT;
+               } else {
+                   extensionOption = extensionOptions.MIDDLE;
+               }
+               moveHorizLift(extensionOption);
             }
             pressed2 = true;
         } else {
@@ -120,14 +143,25 @@ public class Lift {
         }
     }
 
-    public void extendLift() {
-        leftHorizLift.setPosition(LiftConstants.leftExtend);
-        rightHorizLift.setPosition(LiftConstants.rightExtend);
+    public void moveHorizLift(extensionOptions pos) {
+        switch (pos) {
+            case EXTEND:
+                leftHorizLift.setPosition(LiftConstants.leftExtend);
+                rightHorizLift.setPosition(LiftConstants.rightExtend);
+                break;
+            case MIDDLE:
+                leftHorizLift.setPosition(LiftConstants.midLeftExt);
+                rightHorizLift.setPosition(LiftConstants.midRightExt);
+                break;
+            case RETRACT:
+            leftHorizLift.setPosition(LiftConstants.leftRetract);
+            rightHorizLift.setPosition(LiftConstants.rightRetract);
+            break;
+        }
+//        leftHorizLift.setPosition(pos.leftPos());
+//        rightHorizLift.setPosition(pos.rightPos());
     }
-    public void retractLift() {
-        leftHorizLift.setPosition(LiftConstants.leftRetract);
-        rightHorizLift.setPosition(LiftConstants.rightRetract);
-    }
+
 
 
     public void jakeTempLiftControl(double input, boolean horiz) {
@@ -146,10 +180,6 @@ public class Lift {
         }
     }
 
-    public void toMid() {
-        leftHorizLift.setPosition(LiftConstants.midLeftExt);
-        rightHorizLift.setPosition(LiftConstants.midRightExt);
-    }
 
     public void setPosition(dropoffOptions Pos){
         leftLiftMotor.setTargetPosition(Pos.position());

@@ -16,7 +16,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Dumper;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.LoopyPipeline2;
+import org.firstinspires.ftc.teamcode.subsystems.Spinner;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -28,6 +33,11 @@ public class BlueRightSpline extends LinearOpMode {
 
     OpenCvCamera webcam;
     LoopyPipeline2 pipeline;
+    Drivetrain drivetrain;
+    Dumper dumper;
+    Intake intake;
+    Lift lift;
+    Spinner spinner;
 
     CupPosition cupPos;
 
@@ -39,45 +49,79 @@ public class BlueRightSpline extends LinearOpMode {
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drivetrain = new Drivetrain(this, hardwareMap, telemetry);
+        dumper = new Dumper(this, hardwareMap, telemetry);
+        intake = new Intake(this, hardwareMap, telemetry);
+        lift = new Lift(Lift.liftRunMode.AUTONOMOUS,this, hardwareMap, telemetry);
+        spinner = new Spinner(this, hardwareMap, telemetry);
 
 
         Pose2d startPose = new Pose2d(-42, 66, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
+        initCV();
+        dumper.autoMove(Dumper.dumpPositions.LITTLE);
+        dumper.moveKicker(false);
 
-        TrajectorySequence trajSec = drive.trajectorySequenceBuilder(startPose)
-                //Find TSE position here
-                .waitSeconds(3)
-
-                .lineToSplineHeading(new Pose2d(-57, 62, Math.toRadians(315)))
-                //Spin Duck
-                .waitSeconds(4)
-                //Some tuning needed to account for different drop off levels
-                .lineToSplineHeading(new Pose2d(-29, 24, Math.toRadians(180)))
-                //Drop off
-                .waitSeconds(2)
-
-                //To the blue square
-                .lineToSplineHeading(new Pose2d(-66, 36, Math.toRadians(0)))
-
-
+        TrajectorySequence trajSec1 = drive.trajectorySequenceBuilder(startPose)
+                .lineToSplineHeading(new Pose2d(-57, 58, Math.toRadians(210)))
                 .build();
+                //Spin Duck
+//                .waitSeconds(4)
+//                //Some tuning needed to account for different drop off levels
+//                .lineToSplineHeading(new Pose2d(-29, 24, Math.toRadians(180)))
+//                //Drop off
+//                .waitSeconds(2)
+//
+//                //To the blue square
+//                .lineToSplineHeading(new Pose2d(-66, 36, Math.toRadians(0)))
+//
+//
+//                .build();
 
 
         waitForStart();
 
         if(isStopRequested()) return;
+        drive.followTrajectorySequence(trajSec1);
+        spinner.spinnerStatus = Spinner.spinnerStatuses.ON;
+//        spinner.spinnerDirection = Spinner.spinnerDirections.REVERSE;
+        spinner.runSpinner();
+        sleep(4000);
+        drive.updatePoseEstimate();
+        Pose2d NewPose = drive.getPoseEstimate();
+        TrajectorySequence trajsec2 = drive.trajectorySequenceBuilder(NewPose)
+                .splineTo(new Vector2d(-30, 24), Math.toRadians(180))
+                .build();
+        switch (cupPos) {
+            case MIDDLE:
+                lift.setAutoPosition(Lift.dropoffOptions.MIDDLE);
+                break;
+            case RIGHT:
+                lift.setAutoPosition(Lift.dropoffOptions.TOP);
+                break;
+        }
 
-//        drive.followTrajectory(myTrajectory1);
-//        sleep(1000);
-//
-//        drive.followTrajectory(myTrajectory2);
-//        sleep(1000);
-//        drive.followTrajectory(myTrajectory3);
-//        drive.followTrajectory(myTrajectory1);
-//        sleep(1000);
-//        drive.followTrajectory(myTrajectory2);
+        lift.moveHorizLift(Lift.extensionOptions.MIDDLE);
+        sleep(500);
+        dumper.autoMove(Dumper.dumpPositions.DUMP);
+        sleep(500);
+        dumper.moveKicker(true);
+        sleep(1000);
+        dumper.moveKicker(false);
+        sleep(1000);
+        dumper.autoMove(Dumper.dumpPositions.LITTLE);
+        lift.moveHorizLift(Lift.extensionOptions.RETRACT);
+        sleep(500);
+        lift.setAutoPosition(Lift.dropoffOptions.BOTTOM);
+        dumper.autoMove(Dumper.dumpPositions.DOWN);
 
-        drive.followTrajectorySequence(trajSec);
+        drive.updatePoseEstimate();
+        Pose2d NewPose2 = drive.getPoseEstimate();
+        TrajectorySequence trajsec3 = drive.trajectorySequenceBuilder(NewPose2)
+                .lineToConstantHeading(new Vector2d(-66, 36))
+                .build();
+
+
 
 
 
@@ -92,7 +136,7 @@ public class BlueRightSpline extends LinearOpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         //Sets our pipeline to view images through as the one we want
         //(Boundary between regions 1 and 2, Boundary between 2 and 3, Far left, Far top, Far right, Far bottom, opmode, the side we're on)
-        pipeline = new LoopyPipeline2(70, 130, 35, 110, 200, 185, this);
+        pipeline = new LoopyPipeline2(70, 130, 50, 110, 225, 180, this);
         webcam.setPipeline(pipeline);
 
         // Turns on the webcam

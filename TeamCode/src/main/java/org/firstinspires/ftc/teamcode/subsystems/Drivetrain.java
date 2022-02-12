@@ -22,11 +22,11 @@ public class Drivetrain {
     @Config
     public static class TeleOpDTConstants {
         // Biases so we don't go too fast
-        public static double turning_modifier = 0.6;
+        public static double turning_modifier = 0.5;
         public static double y_modifier = 1;
         public static double x_modifier = 1;
         public static double speedFactor = 0.8;
-        public static double power_modifier = 1;
+        public static double power_modifier = 0.85;
     }
 
 
@@ -58,7 +58,7 @@ public class Drivetrain {
         // Prints Hello, World! on standard output.
 
         // If slowModeControl true, slowModeMult = 0.3, else = 1
-        double slowModeMult = slowModeControl ? 0.3 : 1;
+        double slowModeMult = slowModeControl ? 0.35 : 1;
 
         // Sets motor values based on adding and subtracting joystick values
         double LeftX = cubeInput(-leftStickX, TeleOpDTConstants.speedFactor) * TeleOpDTConstants.x_modifier;
@@ -74,6 +74,10 @@ public class Drivetrain {
         frontRightDrive.setPower(frontRightVal * slowModeMult * TeleOpDTConstants.power_modifier);
         backLeftDrive.setPower(backLeftVal * slowModeMult * TeleOpDTConstants.power_modifier);
         backRightDrive.setPower(backRightVal * slowModeMult * TeleOpDTConstants.power_modifier);
+        l.telemetry.addData("Frontleft", frontLeftDrive.getCurrentPosition());
+        l.telemetry.addData("Frontright", frontRightDrive.getCurrentPosition());
+        l.telemetry.addData("Backleft", backLeftDrive.getCurrentPosition());
+        l.telemetry.addData("Backright", backRightDrive.getCurrentPosition());
         
 //        realTelemetry.addData("leftx", LeftX);
 //        realTelemetry.addData("-left stick x", -leftStickX);

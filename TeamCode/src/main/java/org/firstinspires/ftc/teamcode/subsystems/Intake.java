@@ -50,7 +50,7 @@ public class Intake {
 
     @Config
     public static class IntakeConstants {
-        public static double intake_power = 0.5;
+        public static double intake_power = 0.7;
     }
 
     public Intake(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {

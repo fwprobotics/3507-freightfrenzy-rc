@@ -51,7 +51,7 @@ public class Spinner {
         }
     }
 
-    private spinnerStatuses spinnerStatus = spinnerStatuses.OFF;
+    public spinnerStatuses spinnerStatus = spinnerStatuses.OFF;
     public spinnerDirections spinnerDirection = spinnerDirections.FORWARD;
     private boolean toggle = false;
     private boolean pressed = false;

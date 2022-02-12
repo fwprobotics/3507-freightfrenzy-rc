@@ -32,6 +32,8 @@ public class MecanumDrive extends LinearOpMode {
 
         waitForStart();
         telemetry.clearAll();
+        lift.moveHorizLift(Lift.extensionOptions.RETRACT);
+
 
         if (opModeIsActive()) {
 

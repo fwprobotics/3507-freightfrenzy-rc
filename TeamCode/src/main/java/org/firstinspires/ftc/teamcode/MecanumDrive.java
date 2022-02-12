@@ -25,7 +25,7 @@ public class MecanumDrive extends LinearOpMode {
         intake = new Intake(this, hardwareMap, telemetry);
         lift = new Lift(Lift.liftRunMode.TELEOP, this, hardwareMap, telemetry);
         spinner = new Spinner(this, hardwareMap, telemetry);
-        dumper = new Dumper(this, hardwareMap, intake, telemetry);
+        dumper = new Dumper(this, hardwareMap, telemetry);
 
         telemetry.addLine("Ready and WAITING :)");
         telemetry.update();
@@ -40,7 +40,7 @@ public class MecanumDrive extends LinearOpMode {
             while (opModeIsActive()) {
 //                dumper.dumpModerator();
 
-                drivetrain.JoystickMovement(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.left_bumper);
+                drivetrain.JoystickMovement(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, (gamepad1.left_bumper || lift.leftLiftMotor.getCurrentPosition() == Lift.dropoffOptions.TOP.position()));
 
                 intake.toggleIntake(gamepad1.b);
                 intake.directionControl(gamepad1.a);
@@ -49,7 +49,7 @@ public class MecanumDrive extends LinearOpMode {
                 dumper.kickToggle(gamepad2.right_bumper);
 
 
-                lift.jakeTempLiftControl(gamepad2.right_stick_y, gamepad2.a);
+                lift.teleOpControl(gamepad2.right_stick_y, gamepad2.dpad_up, gamepad2.dpad_left, gamepad2.dpad_down, gamepad2.a);
 
                 spinner.toggleSpinner(gamepad2.x, gamepad2.y);
                 spinner.runSpinner();

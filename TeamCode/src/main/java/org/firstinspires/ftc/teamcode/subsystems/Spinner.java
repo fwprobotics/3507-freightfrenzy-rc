@@ -58,7 +58,7 @@ public class Spinner {
 
     @Config
     public static class SpinnerConstants {
-        public static double spinner_power = 0.8;
+        public static double spinner_power = 0.6;
         public static double less_power = 0.4;
     }
 

@@ -92,7 +92,7 @@ public class BlueRightSpline extends LinearOpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         //Sets our pipeline to view images through as the one we want
         //(Boundary between regions 1 and 2, Boundary between 2 and 3, Far left, Far top, Far right, Far bottom, opmode, the side we're on)
-        pipeline = new LoopyPipeline2(80, 165, 40, 130, 245, 140, this);
+        pipeline = new LoopyPipeline2(70, 130, 35, 110, 200, 185, this);
         webcam.setPipeline(pipeline);
 
         // Turns on the webcam

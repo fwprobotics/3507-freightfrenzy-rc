@@ -45,15 +45,15 @@ public class Dumper {
 
     @Config
     public static class DumperConstants {
-        public static double kickOff = 0.6;
-        public static double kickIn = 0.4;
+        public static double kickOff = 0.45;
+        public static double kickIn = 0.6;
         public static double base = 1;
         public static double mid = 0.6;
         public static double drop = 0.3;
     }
 
 
-    public Dumper(LinearOpMode Input, HardwareMap hardwareMap, Intake intake, Telemetry telemetry) {
+    public Dumper(LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
 
         l = Input;
         realTelemetry = telemetry;
@@ -82,6 +82,9 @@ public class Dumper {
     public void dumpToggle(boolean press) {
         if (press) {
             if (!pressed) {
+                if (dumpPosition == dumpPositions.DUMP) {
+                    kicker.setPosition(DumperConstants.kickIn);
+                }
                 if (dumpPosition == dumpPositions.LITTLE) {
                     if (lastDump == dumpPositions.DUMP) {
                         dumpPosition = dumpPositions.DOWN;
@@ -99,14 +102,16 @@ public class Dumper {
             }
             pressed = true;
             dumpServo.setPosition(dumpPosition.position());
+        } else {
             if (dumpPosition == dumpPositions.DUMP) {
                 kicker.setPosition(DumperConstants.kickOff);
-            } else {
-                kicker.setPosition(DumperConstants.kickIn);
             }
-        } else {
             pressed = false;
         }
+    }
+
+    public void autoMove(dumpPositions Pos) {
+        dumpServo.setPosition(Pos.position());
     }
 
     public void kickToggle(boolean press) {

@@ -36,15 +36,14 @@ public class Lift {
     }
 
     public enum dropoffOptions {
-        BASE (0),
-        BOTTOM (200),
-        MIDDLE (500),
-        TOP (800);
+        BOTTOM (0),
+        MIDDLE (560),
+        TOP (1290);
 
-        private int position;
+        public int position;
         dropoffOptions(int position) {this.position = position;}
 
-        private int position() {return position;}
+        public int position() {return position;}
     }
 
 
@@ -56,6 +55,9 @@ public class Lift {
 
         public static double rightExtend = 0.65;
         public static double rightRetract = 0.2;
+
+        public static double midLeftExt = 0.61;
+        public static double midRightExt = 0.45;
     }
 
     public Lift(liftRunMode runmode, LinearOpMode Input, HardwareMap hardwareMap, Telemetry telemetry) {
@@ -138,19 +140,22 @@ public class Lift {
         }
     }
 
-    public void setPosition(dropoffOptions Pos){
-        leftLiftMotor.setTargetPosition(Pos.position());
-        leftLiftMotor.setPower(0.5);
-        rightLiftMotor.setTargetPosition(Pos.position());
-        rightLiftMotor.setPower(0.5);
-        leftLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (leftLiftMotor.isBusy() || rightLiftMotor.isBusy()) {
-            l.idle();
-        }
+    public void toMid() {
+        leftHorizLift.setPosition(LiftConstants.midLeftExt);
+        rightHorizLift.setPosition(LiftConstants.midRightExt);
     }
 
-    public void teleOpControl(double input, boolean up, boolean mid, boolean down, boolean base) { // Rename inputs based on real buttons we choose
+    public void setPosition(dropoffOptions Pos){
+        leftLiftMotor.setTargetPosition(Pos.position());
+        rightLiftMotor.setTargetPosition(Pos.position());
+        leftLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftLiftMotor.setPower(0.5);
+        rightLiftMotor.setPower(0.5);
+    }
+
+    public void teleOpControl(double input, boolean up, boolean mid, boolean down, boolean horiz) { // Rename inputs based on real buttons we choose
+        horizontalLiftToggle(horiz);
         if (down) {
             setPosition(dropoffOptions.BOTTOM);
         }
@@ -160,14 +165,14 @@ public class Lift {
         if (mid) {
             setPosition(dropoffOptions.MIDDLE);
         }
-        if (base) {
-            setPosition(dropoffOptions.BASE);
-        }
-        if (!down & !up & !mid & !base & !leftLiftMotor.isBusy() & !rightLiftMotor.isBusy()) {
+        if (!down & !up & !mid  & !leftLiftMotor.isBusy() & !rightLiftMotor.isBusy()) {
+
             leftLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftLiftMotor.setPower(input * LiftConstants.power_modifier); //Probably should/can get toned down
+            rightLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftLiftMotor.setPower(input * LiftConstants.power_modifier);
+            rightLiftMotor.setPower(input * LiftConstants.power_modifier); //Probably should/can get toned down
         }
+        l.telemetry.addData("left encoder", leftLiftMotor.getCurrentPosition());
+        l.telemetry.addData("right encoder", rightLiftMotor.getCurrentPosition());
     }
-
-
 }

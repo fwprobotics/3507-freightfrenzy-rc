@@ -85,7 +85,7 @@ public class RedRightSpline extends LinearOpMode {
         TrajectorySequence trajSecLow = drive.trajectorySequenceBuilder(littleForward.end())
                 //Some tuning needed to account for different drop off levels
                 .lineToSplineHeading(new Pose2d(7, -20, Math.toRadians(0)))
-                .forward(3)
+                .forward(3.5)
                 // To the blue square if we must save time
                 /* .strafeRight(30)
                 .splineTo(new Vector2d(-66,36), Math.toRadians(270))

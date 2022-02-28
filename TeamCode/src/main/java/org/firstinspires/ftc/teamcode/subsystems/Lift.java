@@ -130,18 +130,19 @@ public class Lift {
     public void midLiftToggle (boolean press){
         if (press) {
             if (!pressed2) {
-               if (extensionOption == extensionOptions.MIDDLE) {
-                   extensionOption = extensionOptions.RETRACT;
-               } else {
-                   extensionOption = extensionOptions.MIDDLE;
-               }
-               moveHorizLift(extensionOption);
+                if (extensionOption == extensionOptions.MIDDLE) {
+                    extensionOption = extensionOptions.RETRACT;
+                } else {
+                    extensionOption = extensionOptions.MIDDLE;
+                }
+                moveHorizLift(extensionOption);
             }
             pressed2 = true;
         } else {
             pressed2 = false;
         }
     }
+
 
     public void moveHorizLift(extensionOptions pos) {
         switch (pos) {

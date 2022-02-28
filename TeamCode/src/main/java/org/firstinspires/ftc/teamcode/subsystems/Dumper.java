@@ -18,7 +18,7 @@ public class Dumper {
 
     public Servo dumpServo;
     public Servo kicker;
-    public ColorSensor color;
+//    public ColorSensor color;
     public LinearOpMode l;
     public Telemetry realTelemetry;
     public dumpPositions dumpPosition;
@@ -60,13 +60,14 @@ public class Dumper {
 
         dumpServo = hardwareMap.servo.get("dumper");
         kicker = hardwareMap.servo.get("kicker");
-        color = hardwareMap.get(ColorSensor.class, "colorSensor");
+//        color = hardwareMap.get(ColorSensor.class, "colorSensor");
         dumpPosition = dumpPositions.DOWN;
 
         // intake = intake;
         // Different motor configurations depending on use case
     }
 
+/*
     public void dumpModerator() {
             if ((color.red() > 1000) && (color.green()>1000)) {
                 hasCube = true;
@@ -80,6 +81,7 @@ public class Dumper {
             l.telemetry.addData("Red", color.red());
             l.telemetry.addData("Green", color.red());
     }
+*/
 
     public void dumpToggle(boolean press) {
         if (press) {

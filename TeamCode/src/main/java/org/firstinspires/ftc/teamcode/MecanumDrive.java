@@ -40,7 +40,7 @@ public class MecanumDrive extends LinearOpMode {
             telemetry.clearAll();
 
             while (opModeIsActive()) {
-                dumper.dumpModerator();
+//                dumper.dumpModerator();
 
                 drivetrain.JoystickMovement(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, (gamepad1.left_bumper || lift.leftLiftMotor.getCurrentPosition() == Lift.dropoffOptions.TOP.position()));
 
